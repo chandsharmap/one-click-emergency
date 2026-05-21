@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>One Click Emergency</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- LOGIN PAGE -->
+    <div class="page active" id="loginPage">
+        <div class="glass">
+            <h1 class="title">ONE CLICK</h1>
+            <p class="sub">Futuristic Emergency Response System</p>
+            <input class="input" type="email" id="loginEmail" placeholder="Enter Email">
+            <input class="input" type="password" id="loginPassword" placeholder="Enter Password">
+            <button class="btn" id="loginBtn" onclick="login()">LOGIN SYSTEM</button>
+            <p class="sub mt-4" style="font-size:12px; cursor:pointer;" onclick="openPage('signupPage')">Don't have account? Sign Up</p>
+        </div>
+    </div>
+
+    <!-- SIGNUP PAGE -->
+    <div class="page" id="signupPage">
+        <div class="glass">
+            <h1 class="title">SIGN UP</h1>
+            <p class="sub">Create Your Emergency Account</p>
+            <input class="input" type="text" id="signupName" placeholder="Full Name">
+            <input class="input" type="email" id="signupEmail" placeholder="Enter Email">
+            <input class="input" type="password" id="signupPassword" placeholder="Create Password">
+            <input class="input" type="tel" id="signupPhone" placeholder="Mobile Number">
+            <button class="btn" onclick="signup()">CREATE ACCOUNT</button>
+            <p class="sub mt-4" style="font-size:12px; cursor:pointer;" onclick="openPage('loginPage')">Already have account? Login</p>
+        </div>
+    </div>
+
+    <!-- DASHBOARD -->
+    <div class="page" id="dashboardPage">
+        <div style="width:100%; max-width:600px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:30px;">
+                <h1 class="title" style="margin:0;">Emergency Dashboard</h1>
+                <button class="action" onclick="logout()">LOGOUT</button>
+            </div>
+            <div class="card" onclick="openPage('familyPage')">
+                <h2 class="text-2xl mb-2">👨‍👩‍👧 Family Details</h2>
+                <p class="opacity-70">Add emergency family contacts</p>
+            </div>
+            <div class="card" onclick="openPage('medicalPage')">
+                <h2 class="text-2xl mb-2">🏥 Medical Status</h2>
+                <p class="opacity-70">Save disease and blood group</p>
+            </div>
+            <div class="card" onclick="openPage('ambulancePage')">
+                <h2 class="text-2xl mb-2">🚑 Ambulance System</h2>
+                <p class="opacity-70">Track nearby ambulance</p>
+            </div>
+            <div class="card" onclick="openPage('bloodPage')">
+                <h2 class="text-2xl mb-2">🩸 Blood Bank</h2>
+                <p class="opacity-70">Emergency blood support</p>
+            </div>
+            <div class="card" onclick="openPage('emergencyPage')">
+                <h2 class="text-2xl mb-2">🚨 One Click Emergency</h2>
+                <p class="opacity-70">Activate SOS protocol</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- FAMILY PAGE -->
+    <div class="page" id="familyPage">
+        <div class="glass">
+            <h1 class="title">Family Details</h1>
+            <input class="input" id="fname" type="text" placeholder="Family Member Name">
+            <input class="input" id="fnumber" type="tel" placeholder="Mobile Number">
+            <input class="input" id="frelation" type="text" placeholder="Relation (e.g., Mother, Brother)">
+            <button class="btn" onclick="saveFamily()">Save Details</button>
+            <div id="familyList" class="mt-6"></div>
+            <div class="back" onclick="openPage('dashboardPage')">← Back To Dashboard</div>
+        </div>
+    </div>
+
+    <!-- MEDICAL PAGE -->
+    <div class="page" id="medicalPage">
+        <div class="glass">
+            <h1 class="title">Medical Status</h1>
+            <input class="input" type="text" id="patientName" placeholder="Patient Name">
+            <label style="color:white; opacity:0.8;">Blood Group:</label>
+            <select class="input" id="bloodGroup">
+                <option>O+</option>
+                <option>O-</option>
+                <option>A+</option>
+                <option>A-</option>
+                <option>B+</option>
+                <option>B-</option>
+                <option>AB+</option>
+                <option>AB-</option>
+            </select>
+            <label style="color:white; opacity:0.8;">Medical Condition:</label>
+            <select class="input" id="medicalCondition">
+                <option>None</option>
+                <option>BP (High Blood Pressure)</option>
+                <option>Sugar (Diabetes)</option>
+                <option>Asthma</option>
+                <option>Heart Disease</option>
+                <option>Kidney Disease</option>
+                <option>Thyroid</option>
+            </select>
+            <button class="btn" onclick="saveMedical()">Save Medical Status</button>
+            <div class="back" onclick="openPage('dashboardPage')">← Back To Dashboard</div>
+        </div>
+    </div>
+
+    <!-- AMBULANCE PAGE -->
+    <div class="page" id="ambulancePage">
+        <div class="glass">
+            <h1 class="title">Ambulance Radar</h1>
+            <p class="sub">Real-time Ambulance Tracking</p>
+            <div style="height:240px; background:rgba(255,0,0,0.08); border-radius:20px; display:flex; justify-content:center; align-items:center; font-size:22px; animation:pulse 1.5s infinite;">
+                🚑 Emergency Unit Tracking
+            </div>
+            <button class="btn mt-6" onclick="findAmbulance()">Search Ambulance</button>
+            
+            <div id="ambulanceResult" class="hidden mt-6 text-center">
+                <h2 class="text-2xl text-red-400 mb-4">✅ Nearby Ambulance Found</h2>
+                <p class="opacity-70 mb-4">Distance: 2.3 km | ETA: 8 minutes</p>
+                <button class="btn" onclick="acceptAmbulance()">Accept Ambulance</button>
+                <button class="btn" style="background:rgba(255,255,255,0.08);" onclick="findAmbulance()">Find Another</button>
+            </div>
+
+            <div id="ambulanceMove" class="hidden mt-6 text-center">
+                <div style="font-size:70px; animation:pulse 1s infinite;">🚑</div>
+                <p class="mt-4 text-green-400">Ambulance Is Coming Through Roads...</p>
+                <p class="opacity-70 mt-2">ETA: 6 minutes</p>
+                <button class="btn mt-4" onclick="viewMap()">View On Map</button>
+            </div>
+
+            <div class="back" onclick="openPage('dashboardPage')">← Back To Dashboard</div>
+        </div>
+    </div>
+
+    <!-- BLOOD BANK PAGE -->
+    <div class="page" id="bloodPage">
+        <div class="glass">
+            <h1 class="title">Blood Bank</h1>
+            <p class="sub">Find Available Blood Units</p>
+            <label style="color:white; opacity:0.8;">Select Blood Group:</label>
+            <select class="input" id="bloodSelect" onchange="showBloodAnimation()">
+                <option>Select Blood Group</option>
+                <option>O+</option>
+                <option>O-</option>
+                <option>A+</option>
+                <option>A-</option>
+                <option>B+</option>
+                <option>B-</option>
+                <option>AB+</option>
+                <option>AB-</option>
+            </select>
+
+            <div id="bloodAnim" class="hidden text-center mt-8">
+                <div style="font-size:90px; animation:pulse 1s infinite;">🩸</div>
+                <h3 class="text-2xl mt-4 text-red-400">Blood Units Available</h3>
+                <p class="mt-2">5 units of <span id="selectedBlood"></span> available</p>
+                <div style="font-size:70px; margin-top:20px;">🫴</div>
+                <button class="btn mt-6" onclick="requestBlood()">Request Blood</button>
+            </div>
+
+            <div class="back" onclick="openPage('dashboardPage')">← Back To Dashboard</div>
+        </div>
+    </div>
+
+    <!-- EMERGENCY PAGE -->
+    <div class="page" id="emergencyPage">
+        <button class="sos" onclick="activateSOS()">SOS</button>
+
+        <div id="sosActions" class="hidden">
+            <div class="actions">
+                <button class="action" onclick="showCall()">📞 Call</button>
+                <button class="action" onclick="showDetails()">📋 Show Details</button>
+                <button class="action" onclick="sendLocation()">📍 Send Location</button>
+            </div>
+
+            <div id="callUI" class="hidden text-center">
+                <div class="callCircle">A</div>
+                <h2 class="mt-5 text-2xl">Connecting Emergency Call...</h2>
+                <p class="opacity-70 mt-3">Call in progress to Emergency Services</p>
+                <button class="btn mt-6" onclick="endCall()">End Call</button>
+            </div>
+
+            <div id="profileBox" class="profile hidden"></div>
+
+            <div id="locationBox" class="profile hidden">
+                <h2 class="text-2xl text-red-400 mb-4">📍 Location Sent</h2>
+                <p class="mb-2"><b>Latitude:</b> <span id="lat">28.7041</span></p>
+                <p class="mb-2"><b>Longitude:</b> <span id="lon">77.1025</span></p>
+                <p class="mb-2"><b>Status:</b> <span class="text-green-400">Location shared with emergency services</span></p>
+                <button class="btn mt-4" onclick="closeLocation()">Close</button>
+            </div>
+        </div>
+
+        <div class="back" onclick="openPage('dashboardPage')">← Back To Dashboard</div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
